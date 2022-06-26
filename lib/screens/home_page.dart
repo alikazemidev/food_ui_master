@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 margin: EdgeInsets.all(12),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       restaurant.name,
@@ -52,9 +53,27 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    // RatingStar(),
                     SizedBox(
                       height: 10,
-                    )
+                    ),
+                    Text(
+                      restaurant.address,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      '0.2 miles away',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
