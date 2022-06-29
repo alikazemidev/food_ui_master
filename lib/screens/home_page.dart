@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_master_ui/data/data.dart';
 import 'package:food_master_ui/models/restaurant.dart';
+import 'package:food_master_ui/screens/restaurant_screen.dart';
 import 'package:food_master_ui/widgets/rating_starts.dart';
 import 'package:food_master_ui/widgets/recent_orders.dart';
 
@@ -16,75 +17,93 @@ class _HomePageState extends State<HomePage> {
     List<Widget> restaurantList = [];
     restaurants.forEach((Restaurant restaurant) {
       restaurantList.add(
-        Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 10,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              width: 1,
-              color: Colors.grey.shade200,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RestaurantScreen(
+                  restaurant: restaurant,
+                ),
+              ),
+            );
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 10,
             ),
-          ),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image(
-                  height: 150,
-                  width: 150,
-                  fit: BoxFit.cover,
-                  image: AssetImage(
-                    restaurant.imageUrl,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                width: 1,
+                color: Colors.grey.shade200,
+              ),
+            ),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Hero(
+                    tag: restaurant.imageUrl,
+                    child: Image(
+                      height: 150,
+                      width: 150,
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        restaurant.imageUrl,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        restaurant.name,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          restaurant.name,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      RatingStarts(rating: restaurant.rating),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        restaurant.address,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                        SizedBox(
+                          height: 10,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '0.2 miles away',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                        RatingStarts(rating: restaurant.rating),
+                        SizedBox(
+                          height: 10,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                        Text(
+                          restaurant.address,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          '0.2 miles away',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
