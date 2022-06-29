@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_master_ui/models/order.dart';
-
 import '../data/data.dart';
 
 class CartScreen extends StatefulWidget {
@@ -13,6 +12,13 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    double totalPraice = 0;
+
+    currentUser.cart.forEach((Order order) {
+      setState(() {
+        totalPraice += order.quantity * order.food.price;
+      });
+    });
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -25,9 +31,61 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
       body: ListView.separated(
+        physics: BouncingScrollPhysics(),
+        itemCount: currentUser.cart.length + 1,
         itemBuilder: (context, index) {
-          Order order = currentUser.cart[index];
-          return _buildCartItem(order);
+          if (index < currentUser.cart.length) {
+            Order order = currentUser.cart[index];
+            return _buildCartItem(order);
+          }
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Estimated Delivery Time:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '25 min',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Totoal Cost:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '\$${totalPraice.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.green.shade700,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 100),
+              ],
+            ),
+          );
         },
         separatorBuilder: (context, index) {
           return Divider(
@@ -35,7 +93,32 @@ class _CartScreenState extends State<CartScreen> {
             color: Colors.grey,
           );
         },
-        itemCount: currentUser.cart.length,
+      ),
+      bottomSheet: Container(
+        height: 100,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, -2),
+              blurRadius: 6,
+            ),
+          ],
+        ),
+        child: TextButton(
+          onPressed: () {},
+          child: Text(
+            'CheckOut',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2.0,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -101,7 +184,7 @@ class _CartScreenState extends State<CartScreen> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    order.quantity -= 1;
+                                    order.quantity = order.quantity - 1;
                                   });
                                 },
                                 child: Text(
@@ -130,7 +213,7 @@ class _CartScreenState extends State<CartScreen> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    order.quantity += 1;
+                                    order.quantity = order.quantity - 1;
                                   });
                                 },
                                 child: Text(
@@ -151,7 +234,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(12),
+                  margin: EdgeInsets.all(5),
                   child: Text(
                     "\$${order.quantity * order.food.price}",
                     style: TextStyle(
