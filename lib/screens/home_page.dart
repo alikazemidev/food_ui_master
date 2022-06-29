@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_master_ui/data/data.dart';
 import 'package:food_master_ui/models/restaurant.dart';
+import 'package:food_master_ui/screens/cart_screen.dart';
 import 'package:food_master_ui/screens/restaurant_screen.dart';
 import 'package:food_master_ui/widgets/rating_starts.dart';
 import 'package:food_master_ui/widgets/recent_orders.dart';
@@ -128,7 +129,14 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CartScreen(),
+                ),
+              );
+            },
             child: Text(
               'Cart(${currentUser.cart.length})',
               style: TextStyle(
